@@ -28,12 +28,12 @@ class Salesman(db.Model):
     __tablename__ = "Salesman"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(25))
+    contact = db.Column(db.String(30))
     rank = db.Column(db.Integer)
 
 class Repository(db.Model):
     __tablename__ = "Repository"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(60))
     address = db.Column(db.String(120))
 
 class Commondity(db.Model):
@@ -42,7 +42,7 @@ class Commondity(db.Model):
     name = db.Column(db.String(60))
     category = db.Column(db.String(60))
     supplierID = db.Column(db.Integer)
-    price = db.Column(db.Integer)
+    price = db.Column(db.Float)
 
 class Supplier(db.Model):
     __tablename__ = "Supplier"
@@ -56,3 +56,32 @@ class Stock(db.Model):
     commondityID = db.Column(db.Integer, primary_key=True)
     repositoryID = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.Integer)
+
+# 业务相关 Relation
+class EnterRepository(db.Model):
+    __tablename__ = "EnterRepository"
+    id = db.Column(db.Integer, primary_key=True)
+    commodityID = db.Column(db.Integer)
+    repositoryID = db.Column(db.Integer)
+    salesmanID = db.Column(db.Integer)
+    commodityNumber = db.Column(db.Integer)
+    time = db.Column(db.DateTime)
+
+class OutRepository(db.Model):
+    __tablename__ = "OutRepository"
+    id = db.Column(db.Integer, primary_key=True)
+    commodityID = db.Column(db.Integer)
+    repositoryID = db.Column(db.Integer)
+    salesmanID = db.Column(db.Integer)
+    commodityNumber = db.Column(db.Integer)
+    time = db.Column(db.DateTime)
+
+class SwitchRepository(db.Model):
+    __tablename__ = "SwitchRepository"
+    id = db.Column(db.Integer, primary_key=True)
+    commodityID = db.Column(db.Integer)
+    outRepositoryID = db.Column(db.Integer)
+    enterRepositoryID = db.Column(db.Integer)
+    salesmanID = db.Column(db.Integer)
+    commodityNumber = db.Column(db.Integer)
+    time = db.Column(db.DateTime)

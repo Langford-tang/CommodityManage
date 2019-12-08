@@ -3,7 +3,7 @@ from flask import render_template, request, url_for, redirect, flash
 from flask_login import login_user, login_required, logout_user, current_user
 
 from CommodityManage import app, db
-from CommodityManage.models import User, Movie
+from CommodityManage.models import *
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -27,6 +27,28 @@ def index():
 
     movies = Movie.query.all()
     return render_template('index.html', movies=movies)
+
+@app.route('/salesman', methods=['GET', 'POST'])
+def salesman():
+    if request.method == 'POST':
+        if not current_user.is_authenticated:
+            return redirect(url_for('index'))
+
+        # title = request.form['title']
+        # year = request.form['year']
+
+        # if not title or not year or len(year) > 4 or len(title) > 60:
+        #     flash('Invalid input.')
+        #     return redirect(url_for('index'))
+
+        # movie = Movie(title=title, year=year)
+        # db.session.add(movie)
+        # db.session.commit()
+        # flash('Item created.')
+        # return redirect(url_for('index'))
+
+    salesmen = Salesman.query.all()
+    return render_template('salesman.html', salesmen=salesmen)
 
 
 @app.route('/movie/edit/<int:movie_id>', methods=['GET', 'POST'])

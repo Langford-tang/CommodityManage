@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 import click
+import random
 
 from CommodityManage import app, db
-from CommodityManage.models import User, Movie
+from CommodityManage.models import *
 
+from faker import Faker
+fake = Faker()
 
 @app.cli.command()
 @click.option('--drop', is_flag=True, help='Create after drop.')
@@ -20,7 +23,11 @@ def forge():
     """Generate fake data."""
     db.create_all()
 
+    # add user
     name = 'Grey Li'
+    user = User(name=name)
+    db.session.add(user)
+    # add movoies
     movies = [
         {'title': 'My Neighbor Totoro', 'year': '1988'},
         {'title': 'Dead Poets Society', 'year': '1989'},
@@ -33,12 +40,46 @@ def forge():
         {'title': 'WALL-E', 'year': '2008'},
         {'title': 'The Pork of Music', 'year': '2012'},
     ]
-
-    user = User(name=name)
-    db.session.add(user)
     for m in movies:
         movie = Movie(title=m['title'], year=m['year'])
         db.session.add(movie)
+    # add salesman: 30
+    for i in range(29):
+        salesman = Salesman(name=fake.name(), contact=fake.phone_number(), rank=1)
+        db.session.add(salesman)
+    salesman = Salesman(name=fake.name(), contact=fake.phone_number(), rank=2)
+    db.session.add(salesman)
+    # add repository： 5
+    for i in range(5):
+        repository = Repository(address=fake.address())
+        db.session.add(repository)
+    # add commodity: 10
+    commodities = [
+        {'name': 'pen', 'category': 'DailyUse', 'supplierID': 1, 'price': 2.34},
+        {'name': 'book', 'category': 'Entertainment', 'supplierID': 1, 'price': 13.46},
+        {'name': 'cellphone', 'category': 'Electronic', 'supplierID': 3, 'price': 122.47},
+        {'name': 'jeans', 'category': 'Cloth', 'supplierID': 5, 'price': 34.76},
+        {'name': 'cake', 'category': 'Food', 'supplierID': 2, 'price': 44.34},
+        {'name': 'apple', 'category': 'Food', 'supplierID': 4, 'price': 37.86},
+        {'name': 'wine', 'category': 'Drinks', 'supplierID': 4, 'price': 137.5},
+        {'name': 'sofa', 'category': 'Furniture', 'supplierID': 2, 'price': 182.6},
+        {'name': 'desk', 'category': 'Furniture', 'supplierID': 3, 'price': 182.4},
+        {'name': 'chair', 'category': 'Furniture', 'supplierID': 1, 'price': 43.5},
+    ]
+    for c in commodities:
+        commondity = Commondity(name=c['name'], category=c['category'], supplierID=c['supplierID'], price=c['price'])
+        db.session.add(commondity)
+    # add supplier: 10
+    for i in range(10):
+        supplier = Supplier(name=fake.company(), address=fake.address(), contact=fake.phone_number())
+        db.session.add(supplier)
+    # stock: 30
+    for i in range(30):
+        stock = Stock(commondityID=i%30, repositoryID=i%5, number=random.choice(range(100,200)))
+        db.session.add(stock)
+    # enter repository
+    # out repository
+    # switch repository
 
     db.session.commit()
     click.echo('Done.')

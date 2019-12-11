@@ -1,0 +1,80 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title>Zhujiemian</title>-->
+    <!--<link href="https://cdn.bootcss.com/bootswatch/4.3.1/cerulean/bootstrap.css" rel="stylesheet">-->
+<!--</head>-->
+<!--<body>-->
+<!--&lt;!&ndash;<div style="position: center">&ndash;&gt;-->
+    <!--&lt;!&ndash;<div style="float: left; font-size: 40px">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div style="border:5px solid #000">管理员</div> <br/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<button>Login</button>&ndash;&gt;-->
+        <!--&lt;!&ndash;<br/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<button>Create Account</button>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div style="float: right; font-size: 40px">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div style="border:5px solid #000">业务员</div><br/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<button>Login</button>&ndash;&gt;-->
+        <!--&lt;!&ndash;<br/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<button>Create Account</button>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--<div class="card border-primary mb-3" style="max-width: 20rem;">-->
+  <!--<div class="card-header">管理员</div>-->
+  <!--<div class="card-body">-->
+    <!--<h4 class="card-title">Primary card title</h4>-->
+    <!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
+  <!--</div>-->
+<!--</div>-->
+<!--<div class="card border-dark mb-3" style="max-width: 20rem;">-->
+  <!--<div class="card-header">业务员</div>-->
+  <!--<div class="card-body">-->
+    <!--<h4 class="card-title">Dark card title</h4>-->
+    <!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
+  <!--</div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width-device-width,initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="sie-edge" />
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+<title>商店进销存管理系统</title>
+
+<!--图标库-->
+<script src="https://unpkg.com/ionicons@4.2.2/dist/ionicons.js"></script>
+
+</head>
+
+<body>
+
+<div class="container" id="container">
+  <div class="form-container sign-up-container">
+
+  </div>
+  <div class="form-container sign-in-container">
+    <form action="#">
+      <h1>管理员入口</h1>
+
+      <button><a href="adminEntry.html">进入</button>
+    </form>
+  </div>
+
+      <div class="overlay-panel overlay-right">
+        <h1>业务员入口</h1>
+
+        <button><a href="salesmanEntry.html">进入</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script  src="{{url_for('static', filename='js/script.js')}}"></script>
+
+</body>
+</html>

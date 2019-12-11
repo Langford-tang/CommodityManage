@@ -5,129 +5,113 @@ from flask_login import login_user, login_required, logout_user, current_user
 from CommodityManage import app, db
 from CommodityManage.models import *
 
-
 @app.route('/', methods=['GET', 'POST'])
-def index():
+def myIndex():
+    '''
+    Index
+    '''
+    # movies = Movie.query.all()
+    # return render_template('myIndex.html', movies=movies)
+    return render_template('myIndex.html')
+
+@app.route('/salesmanEntry.html', methods=['GET', 'POST'])
+def salesmanEntry():
+    '''
+    salesman 登录界面
+    '''
     if request.method == 'POST':
-        if not current_user.is_authenticated:
-            return redirect(url_for('index'))
+        print('method POST.')
 
-        title = request.form['title']
-        year = request.form['year']
-
-        if not title or not year or len(year) > 4 or len(title) > 60:
-            flash('Invalid input.')
-            return redirect(url_for('index'))
-
-        movie = Movie(title=title, year=year)
-        db.session.add(movie)
-        db.session.commit()
-        flash('Item created.')
-        return redirect(url_for('index'))
-
-    movies = Movie.query.all()
-    return render_template('index.html', movies=movies)
-
-@app.route('/salesman', methods=['GET', 'POST'])
-def salesman():
-    if request.method == 'POST':
-        if not current_user.is_authenticated:
-            return redirect(url_for('index'))
-
-        # title = request.form['title']
-        # year = request.form['year']
-
-        # if not title or not year or len(year) > 4 or len(title) > 60:
-        #     flash('Invalid input.')
-        #     return redirect(url_for('index'))
-
-        # movie = Movie(title=title, year=year)
-        # db.session.add(movie)
-        # db.session.commit()
-        # flash('Item created.')
-        # return redirect(url_for('index'))
-
-    salesmen = Salesman.query.all()
-    return render_template('salesman.html', salesmen=salesmen)
-
-
-@app.route('/movie/edit/<int:movie_id>', methods=['GET', 'POST'])
-@login_required
-def edit(movie_id):
-    movie = Movie.query.get_or_404(movie_id)
-
-    if request.method == 'POST':
-        title = request.form['title']
-        year = request.form['year']
-
-        if not title or not year or len(year) > 4 or len(title) > 60:
-            flash('Invalid input.')
-            return redirect(url_for('edit', movie_id=movie_id))
-
-        movie.title = title
-        movie.year = year
-        db.session.commit()
-        flash('Item updated.')
-        return redirect(url_for('index'))
-
-    return render_template('edit.html', movie=movie)
-
-
-@app.route('/movie/delete/<int:movie_id>', methods=['POST'])
-@login_required
-def delete(movie_id):
-    movie = Movie.query.get_or_404(movie_id)
-    db.session.delete(movie)
-    db.session.commit()
-    flash('Item deleted.')
-    return redirect(url_for('index'))
-
-
-@app.route('/settings', methods=['GET', 'POST'])
-@login_required
-def settings():
-    if request.method == 'POST':
-        name = request.form['name']
-
-        if not name or len(name) > 20:
-            flash('Invalid input.')
-            return redirect(url_for('settings'))
-
-        user = User.query.first()
-        user.name = name
-        db.session.commit()
-        flash('Settings updated.')
-        return redirect(url_for('index'))
-
-    return render_template('settings.html')
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
 
         if not username or not password:
+            print("Invalid input.")
             flash('Invalid input.')
-            return redirect(url_for('login'))
+            return redirect(url_for('salesmanEntry'))
 
-        user = User.query.first()
+        users = User.query.all()
+        print("User query susccess.")
 
-        if username == user.username and user.validate_password(password):
-            login_user(user)
-            flash('Login success.')
-            return redirect(url_for('index'))
-
+        for user in users:
+            if username == user.username and user.validate_password(password):
+                print("User match.")
+                login_user(user)
+                flash('Login success.')
+                return redirect(url_for('salesman'))
+        print("User not match.")
         flash('Invalid username or password.')
-        return redirect(url_for('login'))
+        return redirect(url_for('salesmanEntry'))
 
-    return render_template('login.html')
+    return render_template('salesmanEntry.html')
 
+@app.route('/adminEntry.html', methods=['GET', 'POST'])
+def adminEntry():
+    '''
+    admin 登录界面
+    '''
+    if request.method == 'POST':
+        print('method POST.')
 
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    flash('Goodbye.')
-    return redirect(url_for('index'))
+        username = request.form['username']
+        password = request.form['password']
+
+        if not username or not password:
+            print("Invalid input.")
+            flash('Invalid input.')
+            return redirect(url_for('adminEntry'))
+
+        users = User.query.all()
+        print("User query susccess.")
+
+        for user in users:
+            if username == user.username and user.validate_password(password):
+                print("User match.")
+                login_user(user)
+                flash('Login success.')
+                return redirect(url_for('repository_infor'))
+        print("User not match.")
+        flash('Invalid username or password.')
+        return redirect(url_for('adminEntry'))
+
+    return render_template('adminEntry.html')
+
+@app.route('/salesman.html', methods=['GET', 'POST'])
+def salesman():
+    '''
+    salesman 查看界面
+    '''
+    return render_template('salesman.html')
+
+@app.route('/stock_infor.html', methods=['GET', 'POST'])
+def stock_infor():
+    '''
+    展示库存信息
+    '''
+    queries = db.session().query(Stock.repositoryID, Commondity.name, Stock.number).\
+        filter(Stock.commondityID==Commondity.id).all()
+    return render_template('stock_infor.html', queries = queries)
+
+@app.route('/repository_infor.html', methods=['GET', 'POST'])
+def repository_infor():
+    '''
+    展示仓库信息
+    '''
+    repositories = Repository.query.all()
+    return render_template('repository_infor.html', repositories=repositories)
+
+@app.route('/supplier_infor.html', methods=['GET', 'POST'])
+def supplier_infor():
+    '''
+    展示供货商信息
+    '''
+    suppliers = Supplier.query.all()
+    return render_template('supplier_infor.html', suppliers=suppliers)
+
+@app.route('/salesman_infor.html', methods=['GET', 'POST'])
+def salesman_infor():
+    '''
+    展示业务员信息
+    '''
+    salesmen = Salesman.query.all()
+    return render_template('salesman_infor.html', salesmen=salesmen)

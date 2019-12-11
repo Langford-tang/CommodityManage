@@ -17,12 +17,6 @@ class User(db.Model, UserMixin):
     def validate_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-
-class Movie(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(60))
-    year = db.Column(db.String(4))
-
 # 业务相关 Entity
 class Salesman(db.Model):
     __tablename__ = "Salesman"

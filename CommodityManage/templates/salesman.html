@@ -1,26 +1,77 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Salesman</title>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+</head>
+<body>
 
-{% block content %}
-<p>{{ salesmen|length }} salesman</p>
-{% if current_user.is_authenticated %}
-<form method="post">
-    Name <input type="text" name="title" autocomplete="off" required>
-    Year <input type="text" name="year" autocomplete="off" required>
-    <input class="btn" type="submit" name="submit" value="Add">
-</form>
-{% endif %}
-<ul class="salesmen-list">
-    {% for salesman in salesmen %}
-    <li>{{ salesman.name }} - {{ salesman.contact }} - {{ salesman.rank }}
-        <span class="float-right">
-            {% if current_user.is_authenticated %}
-            <a class="btn" href="{{ url_for('edit', salesman_id=salesman.id) }}">Edit</a>
-            <form class="inline-form" method="post" action="{{ url_for('delete', salesman_id=salesman.id) }}">
-                <input class="btn" type="submit" name="delete" value="Delete" onclick="return confirm('Are you sure?')">
-            </form>
-            {% endif %}
-        </span>
-    </li>
-    {% endfor %}
-</ul>
-{% endblock %}
+
+<nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="#" onclick="ruku()">入库</a>
+    <a class="navbar-brand" href="#" onclick="chuku()">出库</a>
+    <a class="navbar-brand" href="#" onclick="zhuancang()">转仓</a>
+</nav>
+
+
+<div style="background-color: white; align-items: center;justify-content: center;">
+    　
+    <div id="operation" style="text-align:center; font-size: 40px; font-weight: bold">操作：入库</div>
+    <table border="1" cellspacing="0" class="table"
+           style="border-right:2px solid #000000;border-bottom:1px solid #000000">
+        <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">商品号</th>
+            <th scope="col">仓库号</th>
+            <th scope="col">数量</th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+        <tr>
+            <th scope="row" id="num">1</th>
+            <td><input id="shangpin" type="text" style="border-style:none"></td>
+            <td><input id="cangku" type="text" style="border-style:none"></td>
+            <td><input id="shuliang" type="text" style="border-style:none"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div style="text-align: center">
+    <button class="btn btn-danger" onclick="addRow()">添加</button>&nbsp;&nbsp;&nbsp;&nbsp;
+    <button class="btn btn-success">确认</button>
+</div>
+
+<script>
+    var num = parseInt(document.getElementById("num").innerText);
+    function ruku() {
+        document.getElementById("operation").innerText = "操作：入库";
+    }
+    function chuku() {
+        document.getElementById("operation").innerText = "操作：出库";
+    }
+    function zhuancang() {
+        document.getElementById("operation").innerText = "操作：转仓";
+    }
+    function addRow() {
+        num += 1;
+        document.getElementById("tbody").innerHTML += "<tr>\n" +
+            "            <th scope=\"row\" id=\"num\">" +
+            num +
+            "</th>\n" +
+            "            <td><input id=\"shangpin\" type=\"text\" style=\"border-style:none\"></td>\n" +
+            "            <td><input id=\"cangku\" type=\"text\" style=\"border-style:none\"></td>\n" +
+            "            <td><input id=\"shuliang\" type=\"text\" style=\"border-style:none\"></td>\n" +
+            "        </tr>";
+    }
+</script>
+
+</body>
+</html>

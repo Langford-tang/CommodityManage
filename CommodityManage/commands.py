@@ -24,25 +24,10 @@ def forge():
     db.create_all()
 
     # add user
-    name = 'Grey Li'
-    user = User(name=name)
+    user = User(username='longfei')
+    user.set_password('112312')
     db.session.add(user)
-    # add movoies
-    movies = [
-        {'title': 'My Neighbor Totoro', 'year': '1988'},
-        {'title': 'Dead Poets Society', 'year': '1989'},
-        {'title': 'A Perfect World', 'year': '1993'},
-        {'title': 'Leon', 'year': '1994'},
-        {'title': 'Mahjong', 'year': '1996'},
-        {'title': 'Swallowtail Butterfly', 'year': '1996'},
-        {'title': 'King of Comedy', 'year': '1999'},
-        {'title': 'Devils on the Doorstep', 'year': '1999'},
-        {'title': 'WALL-E', 'year': '2008'},
-        {'title': 'The Pork of Music', 'year': '2012'},
-    ]
-    for m in movies:
-        movie = Movie(title=m['title'], year=m['year'])
-        db.session.add(movie)
+    
     # add salesman: 30
     for i in range(29):
         salesman = Salesman(name=fake.name(), contact=fake.phone_number(), rank=1)
@@ -53,6 +38,7 @@ def forge():
     for i in range(5):
         repository = Repository(address=fake.address())
         db.session.add(repository)
+
     # add commodity: 10
     commodities = [
         {'name': 'pen', 'category': 'DailyUse', 'supplierID': 1, 'price': 2.34},
@@ -74,9 +60,10 @@ def forge():
         supplier = Supplier(name=fake.company(), address=fake.address(), contact=fake.phone_number())
         db.session.add(supplier)
     # stock: 30
-    for i in range(30):
-        stock = Stock(commondityID=i%30, repositoryID=i%5, number=random.choice(range(100,200)))
-        db.session.add(stock)
+    for i in range(10):
+        for j in range(5):
+            stock = Stock(commondityID=i, repositoryID=j, number=random.choice(range(100,200)))
+            db.session.add(stock)
     # enter repository
     # out repository
     # switch repository

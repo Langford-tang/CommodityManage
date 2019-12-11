@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>repository_infor</title>
+
+    <link rel="stylesheet" type="text/css" href="static/css/left-side-menu.css">
+    <link rel="stylesheet" type="text/css" href="static/fonts/iconfont.css">
+    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"-->
+    <!--integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.2.4/dist/css/uikit.min.css"/>
+
+    <!-- UIkit JS -->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.2.4/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.2.4/dist/js/uikit-icons.min.js"></script>
+    <script type="text/javascript" src="static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="static/js/jquery.slimscroll.min.js"></script>
+    <script type="text/javascript" src="static/js/left-side-menu.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"-->
+    <!--integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"-->
+    <!--crossorigin="anonymous"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js"-->
+    <!--integrity="sha384-L2pyEeut/H3mtgCBaUNw7KWzp5n9+4pDQiExs933/5QfaTh8YStYFFkOzSoXjlTb"-->
+    <!--crossorigin="anonymous"></script>-->
+    <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"-->
+    <!--integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"-->
+    <!--crossorigin="anonymous"></script>-->
+
+</head>
+<body>
+<div class="left-side-menu" style="display: inline-block">
+    <div class="lsm-expand-btn">
+        <div class="lsm-mini-btn">
+            <label>
+                <input type="checkbox" checked="checked">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="30"/>
+                    <path class="line--1" d="M0 40h62c18 0 18-20-17 5L31 55"/>
+                    <path class="line--2" d="M0 50h80"/>
+                    <path class="line--3" d="M0 60h62c18 0 18 20-17-5L31 45"/>
+                </svg>
+            </label>
+
+        </div>
+        <!--        <input type="text"/>-->
+    </div>
+
+    <div class="lsm-container">
+        <div class="lsm-scroll">
+            <div class="lsm-sidebar">
+                <ul>
+                    <li class="lsm-sidebar-item">
+                        <a href="javascript:"><i class="my-icon lsm-sidebar-icon icon_2"></i><span>业务员管理</span><i
+                                class="my-icon lsm-sidebar-more"></i></a>
+                        <ul>
+                            <li><a href="salesman_infor.html"><span>业务员信息</span></a></li>
+                        </ul>
+                    </li>
+
+                    <li class="lsm-sidebar-item">
+                        <a href="javascript:"><i class="my-icon lsm-sidebar-icon icon_2"></i><span>供货商管理</span><i
+                                class="my-icon lsm-sidebar-more"></i></a>
+                        <ul>
+                            <li><a href="supplier_infor.html"><span>供货商信息</span></a></li>
+                        </ul>
+                    </li>
+                    <li class="lsm-sidebar-item">
+                        <a href="javascript:"><i class="my-icon lsm-sidebar-icon icon_2"></i><span>仓库管理</span><i
+                                class="my-icon lsm-sidebar-more"></i></a>
+                        <ul>
+                            <li><a href="repository_infor.html"><span>仓库信息</span></a></li>
+                            <li><a href="stock_infor.html"><span>库存信息</span></a></li>
+                        </ul>
+                    </li>
+                    <li class="lsm-sidebar-item">
+                        <a href="javascript:"><i class="my-icon lsm-sidebar-icon icon_2"></i><span>商品管理</span><i
+                                class="my-icon lsm-sidebar-more"></i></a>
+                        <ul>
+                            <li><a href="commodity_category_infor.html"><span>商品类别</span></a></li>
+                            <li><a href="commodity_infor.html"><span>商品信息</span></a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div style="position: absolute;display: inline-block;width: calc(100% - 40px);">
+        <table border="1" cellspacing="0"
+               style=" border-right:2px solid #000000;border-bottom:1px solid #000000; width: calc(100% - 40px);">
+            <thead>
+            <tr>
+                <th scope="col">仓库号</th>
+                <th scope="col">仓库地址</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+    
+            {% for repository in repositories %}
+            <tbody id="tbody">
+            <tr>
+                <td>{{repository.id}}</td>
+                <td>{{repository.address}}</td>
+    
+                <td>
+                    <button class="uk-button-small uk-button-danger">Edit</button>
+                    <button class="uk-button-small uk-button-secondary">Delete</button>
+                </td>
+            </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+
+
+</div>
+    <div style="text-align: center">
+        <button class="uk-button uk-button-danger" onclick="addRow()">添加</button>&nbsp;&nbsp;&nbsp;&nbsp;
+
+        <button class="uk-button uk-button-secondary">确认</button>
+    </div>
+</div>
+
+<script>
+    function addRow() {
+        document.getElementById("tbody").innerHTML += " <tr>\n" +
+            "            <td><input id=\"col1\" type=\"text\" style=\"border-style:none; background-color: transparent\"></td>\n" +
+            "            <td><input id=\"col2\" type=\"text\" style=\"border-style:none; background-color: transparent\"></td>\n" +
+            "            <td><input id=\"col3\" type=\"text\" style=\"border-style:none; background-color: transparent\"></td>\n" +
+            "            <td><input id=\"col4\" type=\"text\" style=\"border-style:none; background-color: transparent\"></td>\n" +
+            "            <td>\n" +
+            "                <button class=\"uk-button uk-button-danger\">Edit</button>\n" +
+            "                <button class=\"uk-button uk-button-secondary\">Delete</button>\n" +
+            "            </td>\n" +
+            "        </tr>"
+    }
+</script>
+</body>
+
+</html>
+
+

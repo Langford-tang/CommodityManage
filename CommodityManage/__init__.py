@@ -5,6 +5,7 @@ import sys
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_bootstrap import Bootstrap
 
 # SQLite URI compatible
 WIN = sys.platform.startswith('win')
@@ -20,6 +21,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
+bootstrap = Bootstrap(app)
 
 
 @login_manager.user_loader
@@ -40,4 +42,4 @@ def inject_user():
     return dict(user=user)
 
 
-from CommodityManage import views, errors, commands
+from CommodityManage import views, commands

@@ -1,38 +1,38 @@
 <!--<!DOCTYPE html>-->
 <!--<html lang="en">-->
 <!--<head>-->
-    <!--<meta charset="UTF-8">-->
-    <!--<title>Zhujiemian</title>-->
-    <!--<link href="https://cdn.bootcss.com/bootswatch/4.3.1/cerulean/bootstrap.css" rel="stylesheet">-->
+<!--<meta charset="UTF-8">-->
+<!--<title>Zhujiemian</title>-->
+<!--<link href="https://cdn.bootcss.com/bootswatch/4.3.1/cerulean/bootstrap.css" rel="stylesheet">-->
 <!--</head>-->
 <!--<body>-->
 <!--&lt;!&ndash;<div style="position: center">&ndash;&gt;-->
-    <!--&lt;!&ndash;<div style="float: left; font-size: 40px">&ndash;&gt;-->
-        <!--&lt;!&ndash;<div style="border:5px solid #000">管理员</div> <br/>&ndash;&gt;-->
-        <!--&lt;!&ndash;<button>Login</button>&ndash;&gt;-->
-        <!--&lt;!&ndash;<br/>&ndash;&gt;-->
-        <!--&lt;!&ndash;<button>Create Account</button>&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--&lt;!&ndash;<div style="float: right; font-size: 40px">&ndash;&gt;-->
-        <!--&lt;!&ndash;<div style="border:5px solid #000">业务员</div><br/>&ndash;&gt;-->
-        <!--&lt;!&ndash;<button>Login</button>&ndash;&gt;-->
-        <!--&lt;!&ndash;<br/>&ndash;&gt;-->
-        <!--&lt;!&ndash;<button>Create Account</button>&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div style="float: left; font-size: 40px">&ndash;&gt;-->
+<!--&lt;!&ndash;<div style="border:5px solid #000">管理员</div> <br/>&ndash;&gt;-->
+<!--&lt;!&ndash;<button>Login</button>&ndash;&gt;-->
+<!--&lt;!&ndash;<br/>&ndash;&gt;-->
+<!--&lt;!&ndash;<button>Create Account</button>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div style="float: right; font-size: 40px">&ndash;&gt;-->
+<!--&lt;!&ndash;<div style="border:5px solid #000">业务员</div><br/>&ndash;&gt;-->
+<!--&lt;!&ndash;<button>Login</button>&ndash;&gt;-->
+<!--&lt;!&ndash;<br/>&ndash;&gt;-->
+<!--&lt;!&ndash;<button>Create Account</button>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
 <!--&lt;!&ndash;</div>&ndash;&gt;-->
 <!--<div class="card border-primary mb-3" style="max-width: 20rem;">-->
-  <!--<div class="card-header">管理员</div>-->
-  <!--<div class="card-body">-->
-    <!--<h4 class="card-title">Primary card title</h4>-->
-    <!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-  <!--</div>-->
+<!--<div class="card-header">管理员</div>-->
+<!--<div class="card-body">-->
+<!--<h4 class="card-title">Primary card title</h4>-->
+<!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
+<!--</div>-->
 <!--</div>-->
 <!--<div class="card border-dark mb-3" style="max-width: 20rem;">-->
-  <!--<div class="card-header">业务员</div>-->
-  <!--<div class="card-body">-->
-    <!--<h4 class="card-title">Dark card title</h4>-->
-    <!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-  <!--</div>-->
+<!--<div class="card-header">业务员</div>-->
+<!--<div class="card-body">-->
+<!--<h4 class="card-title">Dark card title</h4>-->
+<!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
+<!--</div>-->
 <!--</div>-->
 <!--</body>-->
 <!--</html>-->
@@ -40,64 +40,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width-device-width,initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="sie-edge" />
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-<title>登录注册页面</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width-device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="sie-edge"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>登录注册页面</title>
 
-<!--图标库-->
-<script src="https://unpkg.com/ionicons@4.2.2/dist/ionicons.js"></script>
+    <!--图标库-->
+    <script src="https://unpkg.com/ionicons@4.2.2/dist/ionicons.js"></script>
 
 </head>
 
 <body>
 
 <div class="container" id="container">
-  <div class="form-container sign-up-container">
-    <form action="#">
-      <h1>管理员注册</h1>
+    <div class="form-container sign-up-container">
+        <form action="#">
+            <h1>管理员注册</h1>
 
-      <input type="account" placeholder="姓名">
-      <input type="account" placeholder="联系方式">
-      <input type="password" placeholder="密码">
-      <button>注册</button>
-    </form>
-  </div>
-  <div class="form-container sign-in-container">
-
-    <!-- <form action="#">
-      <h1>管理员登录</h1>
-      <input type="account" placeholder="姓名">
-      <input type="password" placeholder="密码">
-      <button>登录</button>
-    </form> -->
-
-    <form method="post">
-        <h1>管理员登录</h1>
-        <input type="account" name="username" placeholder="姓名" required>
-        <input type="password" name="password" placeholder="密码" required>
-        <input type="submit" name="submit" value="登录">
-      </form>
-
-  </div>
-  <div class="overlay-container">
-    <div class="overlay">
-      <div class="overlay-panel overlay-left">
-        <h1>欢迎进入</h1>
-        <p>商品进销存管理系统</p>
-        <button class="ghost" id="signIn">登录</button>
-      </div>
-      <div class="overlay-panel overlay-right">
-        <h1>欢迎注册</h1>
-        <p>商品进销存管理系统</p>
-        <button class="ghost" id="signUp">注册</button>
-      </div>
+            <input type="account" placeholder="姓名">
+            <input type="account" placeholder="联系方式">
+            <input type="password" placeholder="密码">
+            <button>注册</button>
+        </form>
     </div>
-  </div>
+    <div class="form-container sign-in-container">
+
+        <!-- <form action="#">
+          <h1>管理员登录</h1>
+          <input type="account" placeholder="姓名">
+          <input type="password" placeholder="密码">
+          <button>登录</button>
+        </form> -->
+
+        <form method="post">
+            <h1>管理员登录</h1>
+            <input type="account" name="username" placeholder="姓名" required>
+            <input type="password" name="password" placeholder="密码" required>
+            <button class="ghost">登录</button>
+        </form>
+
+    </div>
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-left">
+                <h1>欢迎进入</h1>
+                <p>商品进销存管理系统</p>
+                <button class="ghost" id="signIn">登录</button>
+            </div>
+            <div class="overlay-panel overlay-right">
+                <h1>欢迎注册</h1>
+                <p>商品进销存管理系统</p>
+                <button class="ghost" id="signUp">注册</button>
+            </div>
+        </div>
+    </div>
 </div>
 
-<script  src="{{ url_for('static', filename='js/script.js')}}"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
 </body>
 </html>

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from flask import render_template, request, url_for, redirect, flash
 from flask_login import login_user, login_required, logout_user, current_user
+from datetime import datetime
+from sqlalchemy import func
 
 from CommodityManage import app, db
 from CommodityManage.models import *
@@ -129,18 +131,27 @@ def commodity_static():
     '''
     商品统计信息
     '''
+    results=[]
     if request.method == 'POST':
         print('Method POST')
 
+        # 获得统计信息选项
         option_state = request.form['state']
-        commodity_name = request.form['commodity_name']
         start_date = request.form['start_date']
         end_date = request.form['end_date']
+        # start_date = datetime.strptime(request.form['start_date'], '%Y-%m-%d').date()
+        # end_date = datetime.strptime(request.form['end_date'], '%Y-%m-%d').date()
 
-        print(option_state)
-        print(commodity_name)
-        print(start_date)
-        print(end_date)
+        # 查询指定时间段内所有商品的入库信息
+        if option_state == "enter":
+            results = db.session().query(EnterRepository.commodityID, Commondity.name, Commondity.category, func.sum(Stock.number).label('sum')).\
+                            filter(EnterRepository.time.between(start_date, end_date)).\
+                            filter(EnterRepository.commodityID==Commondity.id).\
+                            group_by(EnterRepository.commodityID).all()
+        else:
+            results = db.session().query(OutRepository.commodityID, Commondity.name, Commondity.category, func.sum(Stock.number).label('sum')).\
+                            filter(OutRepository.time.between(start_date, end_date)).\
+                            filter(OutRepository.commodityID==Commondity.id).\
+                            group_by(OutRepository.commodityID).all()
 
-    statics = Commondity.query.all()
-    return render_template('commodity_static.html', statics=statics)
+    return render_template('commodity_static.html', results=results)

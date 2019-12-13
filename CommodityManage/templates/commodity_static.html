@@ -102,16 +102,12 @@
         <form method="post">
             <SELECT id="idState" style="width:150" name="state" value="$!{state}">
                 <OPTION value="enter">进货</OPTION>
-                <OPTION value="out">出货</OPTION>
-                <OPTION value="switch">转仓</OPTION>
-                <OPTION value="0" SELECTED>选择操作</OPTION>
+                <OPTION value="out">销售</OPTION>
             </SELECT>
-            商品名：
-            <input type="text" name="commodity_name" >
             起始时间：
-            <input type="datetime" name='start_date' style="height: 25px">
+            <input type="datetime" name='start_date' style="height: 25px" required>
             终止时间：
-            <input type="datetime" name = 'end_date' style="height: 25px">
+            <input type="datetime" name = 'end_date' style="height: 25px" required>
             <button class="ghost">搜索</button>
         </form>
     </div>
@@ -125,20 +121,19 @@
                 <th scope="col">商品号</th>
                 <th scope="col">商品名</th>
                 <th scope="col">商品类别名</th>
-                <th scope="col">操作</th>
                 <th scope="col">数量</th>
             </tr>
             </thead>
 
             <tbody id="tbody">
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+            {% for result in results %}
+                <tr>
+                <td>{{result.commodityID}}</td>
+                <td>{{result.name}}</td>
+                <td>{{result.category}}</td>
+                <td>{{result.sum}}</td>
             </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>

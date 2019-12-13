@@ -12,8 +12,7 @@ def myIndex():
     '''
     Index
     '''
-    # movies = Movie.query.all()
-    # return render_template('myIndex.html', movies=movies)
+
     return render_template('myIndex.html')
 
 @app.route('/salesmanEntry.html', methods=['GET', 'POST'])
@@ -90,8 +89,9 @@ def stock_infor():
     '''
     展示库存信息
     '''
-    queries = db.session().query(Stock.repositoryID, Commondity.name, Stock.number).\
-        filter(Stock.commondityID==Commondity.id).all()
+    queries = db.session().query(Stock.repositoryID, Commondity.name, CommodityCategory.category, Stock.number).\
+        filter(Stock.commondityID==Commondity.id).\
+        filter(Commondity.categoryID==CommodityCategory.id).all()
     return render_template('stock_infor.html', queries = queries)
 
 @app.route('/repository_infor.html', methods=['GET', 'POST'])
@@ -123,8 +123,18 @@ def commodity_infor():
     '''
     展示商品信息
     '''
-    commodities = Commondity.query.all()
+    commodities = db.session().query(Commondity.id, Commondity.name, Commondity.price, Supplier.name.label('supplier_name'), CommodityCategory.category).\
+        filter(Commondity.categoryID == CommodityCategory.id).\
+        filter(Commondity.supplierID == Supplier.id).all()
     return render_template('commodity_infor.html', commodities=commodities)
+
+@app.route('/commodity_category_infor.html', methods=['GET', 'POST'])
+def commodity_category_infor():
+    '''
+    展示商品类别信息
+    '''
+    results = CommodityCategory.query.all()
+    return render_template('commodity_category_infor.html', results=results)
 
 @app.route('/commodity_static.html', methods=['GET', 'POST'])
 def commodity_static():
@@ -144,14 +154,16 @@ def commodity_static():
 
         # 查询指定时间段内所有商品的入库信息
         if option_state == "enter":
-            results = db.session().query(EnterRepository.commodityID, Commondity.name, Commondity.category, func.sum(Stock.number).label('sum')).\
+            results = db.session().query(EnterRepository.commodityID, Commondity.name, CommodityCategory.category, func.sum(Stock.number).label('sum')).\
                             filter(EnterRepository.time.between(start_date, end_date)).\
                             filter(EnterRepository.commodityID==Commondity.id).\
+                            filter(Commondity.categoryID==CommodityCategory.id).\
                             group_by(EnterRepository.commodityID).all()
         else:
-            results = db.session().query(OutRepository.commodityID, Commondity.name, Commondity.category, func.sum(Stock.number).label('sum')).\
+            results = db.session().query(OutRepository.commodityID, Commondity.name, CommodityCategory.category, func.sum(Stock.number).label('sum')).\
                             filter(OutRepository.time.between(start_date, end_date)).\
                             filter(OutRepository.commodityID==Commondity.id).\
+                            filter(Commondity.categoryID==CommodityCategory.id).\
                             group_by(OutRepository.commodityID).all()
 
     return render_template('commodity_static.html', results=results)

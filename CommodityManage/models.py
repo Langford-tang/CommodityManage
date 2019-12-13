@@ -34,9 +34,14 @@ class Commondity(db.Model):
     __tablename__ = "Commodity"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(60))
-    category = db.Column(db.String(60))
+    categoryID = db.Column(db.Integer)
     supplierID = db.Column(db.Integer)
     price = db.Column(db.Float)
+
+class CommodityCategory(db.Model):
+    __tablename__ = "CommodityCategory"
+    id = db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.String(60))
 
 class Supplier(db.Model):
     __tablename__ = "Supplier"

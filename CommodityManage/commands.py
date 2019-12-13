@@ -39,21 +39,34 @@ def forge():
         repository = Repository(address=fake.address())
         db.session.add(repository)
 
+    commodityCategory = [
+        {'id': 1, 'category': 'DailyUse'},
+        {'id': 2, 'category': 'Entertainment'},
+        {'id': 3, 'category': 'Electronic'},
+        {'id': 4, 'category': 'Cloth'},
+        {'id': 5, 'category': 'Food'},
+        {'id': 6, 'category': 'Drinks'},
+        {'id': 7, 'category': 'Furniture'}
+    ]
+    for c in commodityCategory:
+        cate = CommodityCategory(id=c['id'], category=c['category'])
+        db.session.add(cate)
+
     # add commodity: 10
     commodities = [
-        {'name': 'pen', 'category': 'DailyUse', 'supplierID': 1, 'price': 2.34},
-        {'name': 'book', 'category': 'Entertainment', 'supplierID': 1, 'price': 13.46},
-        {'name': 'cellphone', 'category': 'Electronic', 'supplierID': 3, 'price': 122.47},
-        {'name': 'jeans', 'category': 'Cloth', 'supplierID': 5, 'price': 34.76},
-        {'name': 'cake', 'category': 'Food', 'supplierID': 2, 'price': 44.34},
-        {'name': 'apple', 'category': 'Food', 'supplierID': 4, 'price': 37.86},
-        {'name': 'wine', 'category': 'Drinks', 'supplierID': 4, 'price': 137.5},
-        {'name': 'sofa', 'category': 'Furniture', 'supplierID': 2, 'price': 182.6},
-        {'name': 'desk', 'category': 'Furniture', 'supplierID': 3, 'price': 182.4},
-        {'name': 'chair', 'category': 'Furniture', 'supplierID': 1, 'price': 43.5},
+        {'name': 'pen', 'category': 1, 'supplierID': 1, 'price': 2.34},
+        {'name': 'book', 'category': 2, 'supplierID': 1, 'price': 13.46},
+        {'name': 'cellphone', 'category': 3, 'supplierID': 3, 'price': 122.47},
+        {'name': 'jeans', 'category': 4, 'supplierID': 5, 'price': 34.76},
+        {'name': 'cake', 'category': 5, 'supplierID': 2, 'price': 44.34},
+        {'name': 'apple', 'category': 5, 'supplierID': 4, 'price': 37.86},
+        {'name': 'wine', 'category': 6, 'supplierID': 4, 'price': 137.5},
+        {'name': 'sofa', 'category': 7, 'supplierID': 2, 'price': 182.6},
+        {'name': 'desk', 'category': 7, 'supplierID': 3, 'price': 182.4},
+        {'name': 'chair', 'category': 7, 'supplierID': 1, 'price': 43.5},
     ]
     for c in commodities:
-        commondity = Commondity(name=c['name'], category=c['category'], supplierID=c['supplierID'], price=c['price'])
+        commondity = Commondity(name=c['name'], categoryID=c['category'], supplierID=c['supplierID'], price=c['price'])
         db.session.add(commondity)
     # add supplier: 10
     for i in range(10):

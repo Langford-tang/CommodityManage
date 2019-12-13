@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>administrator</title>
+    <title>commodity_static</title>
 
     <link rel="stylesheet" type="text/css" href="static/css/left-side-menu.css">
     <link rel="stylesheet" type="text/css" href="static/fonts/iconfont.css">
@@ -10,6 +10,12 @@
     <!--integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
     <!-- UIkit CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.2.4/dist/css/uikit.min.css"/>
+    <link rel="stylesheet"
+          href="https://formden.com/static/assets/demos/bootstrap-iso/bootstrap-iso/bootstrap-iso.css"/>
+    <link rel="stylesheet" href="static/css/datepicker.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css"
+          integrity="sha256-bLNUHzSMEvxBhoysBE7EXYlIrmo7+n7F4oJra1IgOaM=" crossorigin="anonymous"/>
 
     <!-- UIkit JS -->
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.2.4/dist/js/uikit.min.js"></script>
@@ -17,6 +23,7 @@
     <script type="text/javascript" src="static/js/jquery.min.js"></script>
     <script type="text/javascript" src="static/js/jquery.slimscroll.min.js"></script>
     <script type="text/javascript" src="static/js/left-side-menu.js"></script>
+    <script type="text/javascript" src="static/js/datepicker.js"></script>
     <!--<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"-->
     <!--integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"-->
     <!--crossorigin="anonymous"></script>-->
@@ -44,7 +51,6 @@
 
         </div>
         <!--        <input type="text"/>-->
-
     </div>
 
     <div class="lsm-container">
@@ -88,55 +94,65 @@
             </div>
         </div>
     </div>
-
-   </div>
-
-<div style="position: absolute; display: inline-block;width: calc(100% - 40px);
-overflow-x: auto; overflow-y: auto; height: 100%;">
-    <table border="1" cellspacing="0"
-           style=" border-right:2px solid #000000;border-bottom:1px solid #000000; width: calc(100% - 40px);">
-        <thead>
-        <tr>
-            <th scope="col">业务员号</th>
-            <th scope="col">业务员名</th>
-            <th scope="col">联系方式</th>
-            <th scope="col">职级</th>
-
-            <th scope="col" style="width: 230px"></th>
-        </tr>
-        </thead>
-
-        <tbody id="tbody">
-        {% for salesman in salesmen %}
-        <tr>
-            <td>{{salesman.id}}</td>
-            <td>{{salesman.name}}</td>
-            <td>{{salesman.contact}}</td>
-            <td>{{salesman.rank}}</td>
-            <td>
-                <button class="uk-button uk-button-danger">Edit</button>
-                <button class="uk-button uk-button-secondary">Delete</button>
-            </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 </div>
 
+<div style="display: inline-block; position: absolute; width: calc(100% - 40px);">
+    <div class="bootstrap-iso" style="white-space:nowrap;">
 
-<div style="text-align: center; display: inline-block; position: relative; width: 100%">
-        <button class="uk-button uk-button-danger" onclick="addRow()">添加</button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <form method="post">
+            <SELECT id="idState" style="width:150" name="state" value="$!{state}">
+                <OPTION value="enter">进货</OPTION>
+                <OPTION value="out">出货</OPTION>
+                <OPTION value="switch">转仓</OPTION>
+                <OPTION value="0" SELECTED>选择操作</OPTION>
+            </SELECT>
+            商品名：
+            <input type="text" name="commodity_name" >
+            起始时间：
+            <input type="datetime" name='start_date' style="height: 25px">
+            终止时间：
+            <input type="datetime" name = 'end_date' style="height: 25px">
+            <button class="ghost">搜索</button>
+        </form>
+    </div>
 
-        <button class="uk-button uk-button-secondary">确认</button>
+
+    <div style="position: absolute; width: 100%">
+        <table border="1" cellspacing="0"
+               style=" border-right:2px solid #000000;border-bottom:1px solid #000000;width: 100%">
+            <thead>
+            <tr>
+                <th scope="col">商品号</th>
+                <th scope="col">商品名</th>
+                <th scope="col">商品类别名</th>
+                <th scope="col">操作</th>
+                <th scope="col">数量</th>
+            </tr>
+            </thead>
+
+            <tbody id="tbody">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
 <script>
+
     function addRow() {
         document.getElementById("tbody").innerHTML += " <tr>\n" +
             "            <td><input id=\"col1\" type=\"text\" style=\"border-style:none; background-color: transparent\"></td>\n" +
             "            <td><input id=\"col2\" type=\"text\" style=\"border-style:none; background-color: transparent\"></td>\n" +
-            "            <td><input id=\"col3\" type=\"text\" style=\"border-style:none; background-color: transparent\"></td>\n" +
-            "            <td><input id=\"col4\" type=\"text\" style=\"border-style:none; background-color: transparent\"></td>\n" +
+            "            <td><input id=\"col1\" type=\"text\" style=\"border-style:none; background-color: transparent\"></td>\n" +
+            "            <td><input id=\"col2\" type=\"text\" style=\"border-style:none; background-color: transparent\"></td>\n" +
+            "            <td><input id=\"col1\" type=\"text\" style=\"border-style:none; background-color: transparent\"></td>\n" +
+            "            <td><input id=\"col2\" type=\"text\" style=\"border-style:none; background-color: transparent\"></td>\n" +
             "            <td>\n" +
             "                <button class=\"uk-button uk-button-danger\">Edit</button>\n" +
             "                <button class=\"uk-button uk-button-secondary\">Delete</button>\n" +

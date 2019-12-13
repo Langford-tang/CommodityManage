@@ -115,3 +115,32 @@ def salesman_infor():
     '''
     salesmen = Salesman.query.all()
     return render_template('salesman_infor.html', salesmen=salesmen)
+
+@app.route('/commodity_infor.html', methods=['GET', 'POST'])
+def commodity_infor():
+    '''
+    展示商品信息
+    '''
+    commodities = Commondity.query.all()
+    return render_template('commodity_infor.html', commodities=commodities)
+
+@app.route('/commodity_static.html', methods=['GET', 'POST'])
+def commodity_static():
+    '''
+    商品统计信息
+    '''
+    if request.method == 'POST':
+        print('Method POST')
+
+        option_state = request.form['state']
+        commodity_name = request.form['commodity_name']
+        start_date = request.form['start_date']
+        end_date = request.form['end_date']
+
+        print(option_state)
+        print(commodity_name)
+        print(start_date)
+        print(end_date)
+
+    statics = Commondity.query.all()
+    return render_template('commodity_static.html', statics=statics)

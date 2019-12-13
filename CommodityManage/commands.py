@@ -65,8 +65,45 @@ def forge():
             stock = Stock(commondityID=i, repositoryID=j, number=random.choice(range(100,200)))
             db.session.add(stock)
     # enter repository
+    for i in range(30):
+        commodityID = random.choice(range(10))
+        time = fake.date_time_this_year()
+        repositoryID = random.choice(range(5))
+        salesmanID = random.choice(range(30))
+        commodityNumber = random.choice(range(100,200))
+        
+        enterRepo = EnterRepository(commodityID=commodityID, salesmanID=salesmanID, repositoryID=repositoryID,
+                                    commodityNumber=commodityNumber, time=time)
+        db.session.add(enterRepo)
+
     # out repository
+    for i in range(30):
+        commodityID = random.choice(range(10))
+        time = fake.date_time_this_year()
+        repositoryID = random.choice(range(5))
+        salesmanID = random.choice(range(30))
+        commodityNumber = random.choice(range(100,200))
+        
+        outRepo = OutRepository(commodityID=commodityID, salesmanID=salesmanID, repositoryID=repositoryID,
+                                    commodityNumber=commodityNumber, time=time)
+        db.session.add(outRepo)
+
     # switch repository
+    for i in range(30):
+        commodityID = random.choice(range(10))
+        time = fake.date_time_this_year()
+        outRepositoryID = random.choice(range(5))
+        enterRepositoryID = random.choice(range(5))
+        while (enterRepositoryID==outRepositoryID):
+            outRepositoryID = random.choice(range(5))
+
+        salesmanID = random.choice(range(30))
+        commodityNumber = random.choice(range(100,200))
+        
+        switchRepo = SwitchRepository(commodityID=commodityID, salesmanID=salesmanID, 
+                                    outRepositoryID=outRepositoryID, enterRepositoryID=enterRepositoryID,
+                                    commodityNumber=commodityNumber, time=time)
+        db.session.add(switchRepo)
 
     db.session.commit()
     click.echo('Done.')

@@ -130,7 +130,8 @@ def commodity_infor():
     '''
     展示商品信息
     '''
-    commodities = db.session().query(Commondity.id, Commondity.name, Commondity.price, Supplier.name.label('supplier_name'), CommodityCategory.category).\
+    commodities = db.session().query(Commondity.id, Commondity.name, Commondity.price,\
+                                        Supplier.name.label('supplier_name'), CommodityCategory.category).\
         filter(Commondity.categoryID == CommodityCategory.id).\
         filter(Commondity.supplierID == Supplier.id).all()
     return render_template('commodity_infor.html', commodities=commodities)
@@ -224,9 +225,17 @@ def out_repo():
             return redirect(url_for('enter_repo'))
         commodityID = commodity.id
         repositoryID = request.form['repository']
-        num = request.form['num']
+        num = int(request.form['num'])
         user = db.session().query(Salesman).get(session['user_id'])
         time = datetime.now()
+
+        # check stock num > 0 
+        check_num = db.session.query(Stock).filter(Stock.commondityID==commodityID).\
+                                filter(Stock.repositoryID==repositoryID).first().number
+        if check_num-num<0:
+            print("volite >0 constraint")
+            flash("库存数量小于销售数量")
+            return redirect(url_for('enter_repo'))
 
         outRepository = OutRepository(commodityID=commodityID, repositoryID=repositoryID,\
                                          salesmanID=user.id, commodityNumber=num, time=time)
@@ -261,6 +270,14 @@ def switch_repo():
         num = request.form['num']
         user = db.session().query(Salesman).get(session['user_id'])
         time = datetime.now()
+
+        # check stock num > 0 
+        check_num = db.session.query(Stock).filter(Stock.commondityID==commodityID).\
+                                filter(Stock.outRepositoryID==fromRepositoryID).first().number
+        if check_num-num<0:
+            print("volite >0 constraint")
+            flash("库存数量小于销售数量")
+            return redirect(url_for('switch_repo'))
 
         switchRepository = SwitchRepository(commodityID=commodityID, outRepositoryID=fromRepositoryID,\
                                             enterRepositoryID = toRepositoryID, salesmanID=user.id,\
@@ -301,12 +318,11 @@ def after_OutRepository_intert(mapper, connection, target):
     db.session.query(Stock).filter(Stock.commondityID==commodityID).\
                             filter(Stock.repositoryID==repositoryID).\
                             update({"number": (Stock.number - commodityNumber)})
-    # db.session.commit()
     print("库存表根据出库表已更新")
 
 @event.listens_for(SwitchRepository, 'after_insert')
 def after_SwitchRepository_intert(mapper, connection, target):
-    '''出库之后更新库存表'''
+    '''转仓之后更新库存表'''
     commodityID = target.commodityID
     outRepositoryID = target.outRepositoryID
     enterRepositoryID = target.enterRepositoryID

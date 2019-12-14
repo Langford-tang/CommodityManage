@@ -70,7 +70,7 @@ class Stock(db.Model):
     repositoryID = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.Integer)
 
-    CheckConstraint('number > 0')
+    CheckConstraint('number>0')
 
 # 业务相关 Relation
 class EnterRepository(db.Model):

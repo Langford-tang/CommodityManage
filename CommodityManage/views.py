@@ -2,7 +2,7 @@
 from flask import render_template, request, url_for, redirect, flash, session
 from flask_login import login_user, login_required, logout_user, current_user
 from datetime import datetime
-from sqlalchemy import func
+from sqlalchemy import func, event
 
 from CommodityManage import app, db
 from CommodityManage.models import *
@@ -277,3 +277,46 @@ def switch_repo():
                             filter(CommodityCategory.id == Commondity.categoryID).\
                             filter(Salesman.id == SwitchRepository.salesmanID).all()
     return render_template('switch_repo.html', results=results)
+
+@event.listens_for(EnterRepository, 'after_insert')
+def after_EnterRepo_intert(mapper, connection, target):
+    '''入库之后更新库存表'''
+    commodityID = target.commodityID
+    repositoryID = target.repositoryID
+    commodityNumber = int(target.commodityNumber)
+
+    db.session.query(Stock).filter(Stock.commondityID==commodityID).\
+                            filter(Stock.repositoryID==repositoryID).\
+                            update({"number": (Stock.number + commodityNumber)})
+    # db.session.commit()
+    print("库存表根据入库表已更新")
+
+@event.listens_for(OutRepository, 'after_insert')
+def after_OutRepository_intert(mapper, connection, target):
+    '''出库之后更新库存表'''
+    commodityID = target.commodityID
+    repositoryID = target.repositoryID
+    commodityNumber = int(target.commodityNumber)
+
+    db.session.query(Stock).filter(Stock.commondityID==commodityID).\
+                            filter(Stock.repositoryID==repositoryID).\
+                            update({"number": (Stock.number - commodityNumber)})
+    # db.session.commit()
+    print("库存表根据出库表已更新")
+
+@event.listens_for(SwitchRepository, 'after_insert')
+def after_SwitchRepository_intert(mapper, connection, target):
+    '''出库之后更新库存表'''
+    commodityID = target.commodityID
+    outRepositoryID = target.outRepositoryID
+    enterRepositoryID = target.enterRepositoryID
+    commodityNumber = int(target.commodityNumber)
+
+    db.session.query(Stock).filter(Stock.commondityID==commodityID).\
+                            filter(Stock.repositoryID==enterRepositoryID).\
+                            update({"number": (Stock.number + commodityNumber)})
+    db.session.query(Stock).filter(Stock.commondityID==commodityID).\
+                            filter(Stock.repositoryID==outRepositoryID).\
+                            update({"number": (Stock.number - commodityNumber)})
+    # db.session.commit()
+    print("库存表根据转仓表已更新")

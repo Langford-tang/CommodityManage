@@ -40,6 +40,8 @@ def salesmanEntry():
                 login_user(user)
                 session['user_type'] = 'salesman'
                 session['user_id'] = user.id
+                session['user_rank'] = int(user.rank)
+                session['user_repository'] = int(user.repositoryID)
                 flash('Login success.')
                 return redirect(url_for('stock_infor'))
         print("User not match.")
@@ -70,6 +72,7 @@ def adminEntry():
         for user in users:
             if username == user.username and user.validate_password(password):
                 print("User match.")
+                session['user_rank']='admin'
                 login_user(user)
                 flash('Login success.')
                 return redirect(url_for('repository_infor'))
@@ -91,14 +94,15 @@ def stock_infor():
     '''
     展示库存信息
     '''
-
-    print(session['user_type'])
-    print(session['user_id'])
-    print(type(session['user_id']))
-
-    queries = db.session().query(Stock.repositoryID, Commondity.name, CommodityCategory.category, Stock.number).\
-        filter(Stock.commondityID==Commondity.id).\
-        filter(Commondity.categoryID==CommodityCategory.id).all()
+    if session['user_rank']==1:
+        queries = db.session().query(Stock.repositoryID, Commondity.name, CommodityCategory.category, Stock.number).\
+            filter(Stock.commondityID==Commondity.id).\
+            filter(Stock.repositoryID==session['user_repository']).\
+            filter(Commondity.categoryID==CommodityCategory.id).all()
+    else:
+        queries = db.session().query(Stock.repositoryID, Commondity.name, CommodityCategory.category, Stock.number).\
+            filter(Stock.commondityID==Commondity.id).\
+            filter(Commondity.categoryID==CommodityCategory.id).all()
     return render_template('stock_infor.html', queries = queries)
 
 @app.route('/repository_infor.html', methods=['GET', 'POST'])
@@ -106,7 +110,10 @@ def repository_infor():
     '''
     展示仓库信息
     '''
-    repositories = Repository.query.all()
+    if session['user_rank']==1:
+        repositories = Repository.query.filter(Repository.id==session['user_repository']).all()
+    else:
+        repositories = Repository.query.all()
     return render_template('repository_infor.html', repositories=repositories)
 
 @app.route('/supplier_infor.html', methods=['GET', 'POST'])
@@ -122,7 +129,10 @@ def salesman_infor():
     '''
     展示业务员信息
     '''
-    salesmen = Salesman.query.all()
+    if session['user_rank']==1:
+        salesmen = Salesman.query.filter(Salesman.repositoryID==session['user_repository']).all()
+    else:
+        salesmen = Salesman.query.all()
     return render_template('salesman_infor.html', salesmen=salesmen)
 
 @app.route('/commodity_infor.html', methods=['GET', 'POST'])
@@ -201,13 +211,23 @@ def enter_repo():
         db.session.commit()
         print("商品入库成功！")
 
-    results = db.session().query(EnterRepository.id, Commondity.name, CommodityCategory.category, EnterRepository.repositoryID,  
-                                Salesman.id.label('salesmanID'), Salesman.name.label('salesmanName'), Supplier.name.label('supplierName'),
-                                EnterRepository.commodityNumber, EnterRepository.time.label('date') ).\
-                            filter(Commondity.id == EnterRepository.commodityID).\
-                            filter(CommodityCategory.id == Commondity.categoryID).\
-                            filter(Supplier.id == Commondity.supplierID).\
-                            filter(Salesman.id == EnterRepository.salesmanID).all()
+    if session['user_rank']==1:
+        results = db.session().query(EnterRepository.id, Commondity.name, CommodityCategory.category, EnterRepository.repositoryID,  
+                                    Salesman.id.label('salesmanID'), Salesman.name.label('salesmanName'), Supplier.name.label('supplierName'),
+                                    EnterRepository.commodityNumber, EnterRepository.time.label('date') ).\
+                                filter(Commondity.id == EnterRepository.commodityID).\
+                                filter(CommodityCategory.id == Commondity.categoryID).\
+                                filter(Supplier.id == Commondity.supplierID).\
+                                filter(EnterRepository.repositoryID==session['user_repository']).\
+                                filter(Salesman.id == EnterRepository.salesmanID).all()
+    else:
+        results = db.session().query(EnterRepository.id, Commondity.name, CommodityCategory.category, EnterRepository.repositoryID,  
+                                    Salesman.id.label('salesmanID'), Salesman.name.label('salesmanName'), Supplier.name.label('supplierName'),
+                                    EnterRepository.commodityNumber, EnterRepository.time.label('date') ).\
+                                filter(Commondity.id == EnterRepository.commodityID).\
+                                filter(CommodityCategory.id == Commondity.categoryID).\
+                                filter(Supplier.id == Commondity.supplierID).\
+                                filter(Salesman.id == EnterRepository.salesmanID).all()
     return render_template('enter_repo.html', results=results)
 
 @app.route('/out_repo.html', methods=['GET', 'POST'])
@@ -243,12 +263,21 @@ def out_repo():
         db.session.commit()
         print("商品出库成功！")
 
-    results = db.session().query(OutRepository.id, Commondity.name, CommodityCategory.category, OutRepository.repositoryID,  
-                                Salesman.id.label('salesmanID'), Salesman.name.label('salesmanName'),
-                                OutRepository.commodityNumber, OutRepository.time.label('date') ).\
-                            filter(Commondity.id == OutRepository.commodityID).\
-                            filter(CommodityCategory.id == Commondity.categoryID).\
-                            filter(Salesman.id == OutRepository.salesmanID).all()
+    if session['user_rank']==1:
+        results = db.session().query(OutRepository.id, Commondity.name, CommodityCategory.category, OutRepository.repositoryID,  
+                                    Salesman.id.label('salesmanID'), Salesman.name.label('salesmanName'),
+                                    OutRepository.commodityNumber, OutRepository.time.label('date') ).\
+                                filter(Commondity.id == OutRepository.commodityID).\
+                                filter(CommodityCategory.id == Commondity.categoryID).\
+                                filter(OutRepository.repositoryID==session['user_repository']).\
+                                filter(Salesman.id == OutRepository.salesmanID).all()
+    else:
+        results = db.session().query(OutRepository.id, Commondity.name, CommodityCategory.category, OutRepository.repositoryID,  
+                                    Salesman.id.label('salesmanID'), Salesman.name.label('salesmanName'),
+                                    OutRepository.commodityNumber, OutRepository.time.label('date') ).\
+                                filter(Commondity.id == OutRepository.commodityID).\
+                                filter(CommodityCategory.id == Commondity.categoryID).\
+                                filter(Salesman.id == OutRepository.salesmanID).all()
     return render_template('out_repo.html', results=results)
 
 @app.route('/switch_repo.html', methods=['GET', 'POST'])

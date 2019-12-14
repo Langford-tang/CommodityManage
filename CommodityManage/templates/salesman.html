@@ -6,9 +6,15 @@
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.2.4/dist/css/uikit.min.css"/>
+
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
+    <!-- UIkit JS -->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.2.4/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.2.4/dist/js/uikit-icons.min.js"></script>
 </head>
 <body>
 
@@ -22,7 +28,7 @@
 
 <div style="background-color: white; align-items: center;justify-content: center;">
     　
-    <div id="operation" style="text-align:center; font-size: 40px; font-weight: bold">操作：入库</div>
+    <div id="operation" align="center" style="text-align:center; font-size: 40px; font-weight: bold">操作：入库</div>
     <table border="1" cellspacing="0" class="table"
            style="border-right:2px solid #000000;border-bottom:1px solid #000000">
         <thead>
@@ -47,6 +53,37 @@
 <div style="text-align: center">
     <button class="btn btn-danger" onclick="addRow()">添加</button>&nbsp;&nbsp;&nbsp;&nbsp;
     <button class="btn btn-success">确认</button>
+</div>
+
+<div style="position: absolute; width: 100%; text-align: center;
+overflow-x: auto; overflow-y: auto; height: 100%;">
+    <table border="1" cellspacing="0" align="center"
+           style=" border-right:2px solid #000000;border-bottom:1px solid #000000; width: 100%">
+        <thead>
+        <tr>
+            <th scope="col">仓库号</th>
+            <th scope="col">商品名</th>
+            <th scope="col">商品数量</th>
+            <th scope="col" style="width: 139px;"></th>
+        </tr>
+        </thead>
+
+        <tbody id="tbody">
+        {% for query in queries %}
+            <tr>
+                <td>{{ query.repositoryID }}</td>
+                <td>{{ query.name }}</td>
+                <td>{{ query.number }}</td>
+
+                <td>
+                    <button class="uk-button-small uk-button-danger">Edit</button>
+                    <button class="uk-button-small uk-button-secondary">Delete</button>
+                </td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
 
 <script>

@@ -81,7 +81,9 @@ def salesman():
     '''
     salesman 查看界面
     '''
-    return render_template('salesman.html')
+    queries = db.session().query(Stock.repositoryID, Commondity.name, Stock.number). \
+        filter(Stock.commondityID == Commondity.id).all()
+    return render_template('salesman.html', queries=queries)
 
 @app.route('/stock_infor.html', methods=['GET', 'POST'])
 def stock_infor():

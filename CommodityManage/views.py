@@ -184,6 +184,13 @@ def commodity_static():
                             filter(Commondity.categoryID==CommodityCategory.id).\
                             group_by(OutRepository.commodityID).all()
 
+        #使用图表
+        chart_state = request.form['chartState']
+        if chart_state=='yes':
+            names = [result.name for result in results]
+            sums = [result.sum for result in results]
+            return render_template('commodity_static_chart.html', names=names, sums=sums)
+
     return render_template('commodity_static.html', results=results)
 
 @app.route('/enter_repo.html', methods=['GET', 'POST'])

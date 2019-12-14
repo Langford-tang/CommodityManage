@@ -109,6 +109,10 @@
     <div class="bootstrap-iso" style="white-space:nowrap;">
 
         <form method="post">
+            <SELECT id="chartState" style="width:150" name="chartState" value="$!{state}">
+                <OPTION value="yes">查看图表</OPTION>
+                <OPTION value="no">--</OPTION>
+            </SELECT>
             <SELECT id="idState" style="width:150" name="state" value="$!{state}">
                 <OPTION value="enter">进货</OPTION>
                 <OPTION value="out">销售</OPTION>

@@ -167,3 +167,44 @@ def commodity_static():
                             group_by(OutRepository.commodityID).all()
 
     return render_template('commodity_static.html', results=results)
+
+@app.route('/enter_repo.html', methods=['GET', 'POST'])
+def enter_repo():
+    '''
+    展示入库业务信息
+    '''
+    results = db.session().query(EnterRepository.id, Commondity.name, CommodityCategory.category, EnterRepository.repositoryID,  
+                                Salesman.id.label('salesmanID'), Salesman.name.label('salesmanName'), Supplier.name.label('supplierName'),
+                                EnterRepository.commodityNumber, EnterRepository.time.label('date') ).\
+                            filter(Commondity.id == EnterRepository.commodityID).\
+                            filter(CommodityCategory.id == Commondity.categoryID).\
+                            filter(Supplier.id == Commondity.supplierID).\
+                            filter(Salesman.id == EnterRepository.salesmanID).all()
+    return render_template('enter_repo.html', results=results)
+
+@app.route('/out_repo.html', methods=['GET', 'POST'])
+def out_repo():
+    '''
+    展示销售出库业务信息
+    '''
+    results = db.session().query(OutRepository.id, Commondity.name, CommodityCategory.category, OutRepository.repositoryID,  
+                                Salesman.id.label('salesmanID'), Salesman.name.label('salesmanName'),
+                                OutRepository.commodityNumber, OutRepository.time.label('date') ).\
+                            filter(Commondity.id == OutRepository.commodityID).\
+                            filter(CommodityCategory.id == Commondity.categoryID).\
+                            filter(Salesman.id == OutRepository.salesmanID).all()
+    return render_template('out_repo.html', results=results)
+
+@app.route('/switch_repo.html', methods=['GET', 'POST'])
+def switch_repo():
+    '''
+    展示转仓业务信息
+    '''
+    results = db.session().query(SwitchRepository.id, Commondity.name, CommodityCategory.category, 
+                                SwitchRepository.enterRepositoryID, SwitchRepository.outRepositoryID,  
+                                Salesman.id.label('salesmanID'), Salesman.name.label('salesmanName'),
+                                SwitchRepository.commodityNumber, SwitchRepository.time.label('date') ).\
+                            filter(Commondity.id == SwitchRepository.commodityID).\
+                            filter(CommodityCategory.id == Commondity.categoryID).\
+                            filter(Salesman.id == SwitchRepository.salesmanID).all()
+    return render_template('switch_repo.html', results=results)

@@ -32,11 +32,21 @@ def forge():
     for i in range(29):
         name = fake.name()
         contact = fake.phone_number()
-        rank=1
+        repositoryID = random.choice(range(5))
         username = name.split(" ")[0]+"123"
-        salesman = Salesman(name=name, contact=contact, rank=1, username=username)
+        salesman = Salesman(name=name, contact=contact, rank=1,\
+                            username=username, repositoryID=repositoryID)
         salesman.set_password('123')
         db.session.add(salesman)
+
+    contact = fake.phone_number()
+    repositoryID = random.choice(range(5))
+    username = "Steven123"
+    salesman = Salesman(name="Steven", contact=contact, rank=2,\
+                            username=username, repositoryID=repositoryID)
+    salesman.set_password('123')
+    db.session.add(salesman)
+
     # add repository： 5
     for i in range(5):
         repository = Repository(address=fake.address())
@@ -78,7 +88,7 @@ def forge():
     # stock: 30
     for i in range(10):
         for j in range(5):
-            stock = Stock(commondityID=i, repositoryID=j, number=random.choice(range(100,200)))
+            stock = Stock(commondityID=i, repositoryID=j, number=random.choice(range(10000,20000)))
             db.session.add(stock)
     # enter repository
     for i in range(30):

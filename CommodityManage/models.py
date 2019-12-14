@@ -6,10 +6,21 @@ from CommodityManage import db
 
 
 class User(db.Model, UserMixin):
+    '''Admin user'''
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def validate_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20))
     username = db.Column(db.String(20))
     password_hash = db.Column(db.String(128))
+ 
+# 业务相关 Entity
+class Salesman(db.Model, UserMixin):
+    __tablename__ = "Salesman"
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -17,13 +28,13 @@ class User(db.Model, UserMixin):
     def validate_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-# 业务相关 Entity
-class Salesman(db.Model):
-    __tablename__ = "Salesman"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(25))
     contact = db.Column(db.String(30))
     rank = db.Column(db.Integer)
+
+    username = db.Column(db.String(20))
+    password_hash = db.Column(db.String(128))
 
 class Repository(db.Model):
     __tablename__ = "Repository"

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, request, url_for, redirect, flash
+from flask import render_template, request, url_for, redirect, flash, session
 from flask_login import login_user, login_required, logout_user, current_user
 from datetime import datetime
 from sqlalchemy import func
@@ -31,15 +31,17 @@ def salesmanEntry():
             flash('Invalid input.')
             return redirect(url_for('salesmanEntry'))
 
-        users = User.query.all()
+        users = Salesman.query.all()
         print("User query susccess.")
 
         for user in users:
             if username == user.username and user.validate_password(password):
                 print("User match.")
                 login_user(user)
+                session['user_type'] = 'salesman'
+                session['user_id'] = user.id
                 flash('Login success.')
-                return redirect(url_for('salesman'))
+                return redirect(url_for('stock_infor'))
         print("User not match.")
         flash('Invalid username or password.')
         return redirect(url_for('salesmanEntry'))
@@ -89,6 +91,11 @@ def stock_infor():
     '''
     展示库存信息
     '''
+
+    print(session['user_type'])
+    print(session['user_id'])
+    print(type(session['user_id']))
+
     queries = db.session().query(Stock.repositoryID, Commondity.name, CommodityCategory.category, Stock.number).\
         filter(Stock.commondityID==Commondity.id).\
         filter(Commondity.categoryID==CommodityCategory.id).all()
@@ -171,8 +178,28 @@ def commodity_static():
 @app.route('/enter_repo.html', methods=['GET', 'POST'])
 def enter_repo():
     '''
-    展示入库业务信息
+    入库业务
     '''
+    if request.method == 'POST':
+        commodityName = request.form['commodity']
+        commodity = db.session().query(Commondity).\
+            filter(Commondity.name==commodityName).first()
+        if not commodity:
+            '''商品名输入有误，重新填写'''
+            print("invalid commodity name.")
+            return redirect(url_for('enter_repo'))
+        commodityID = commodity.id
+        repositoryID = request.form['repository']
+        num = request.form['num']
+        user = db.session().query(Salesman).get(session['user_id'])
+        time = datetime.now()
+
+        enterRepository = EnterRepository(commodityID=commodityID, repositoryID=repositoryID,\
+                                         salesmanID=user.id, commodityNumber=num, time=time)
+        db.session.add(enterRepository)
+        db.session.commit()
+        print("商品入库成功！")
+
     results = db.session().query(EnterRepository.id, Commondity.name, CommodityCategory.category, EnterRepository.repositoryID,  
                                 Salesman.id.label('salesmanID'), Salesman.name.label('salesmanName'), Supplier.name.label('supplierName'),
                                 EnterRepository.commodityNumber, EnterRepository.time.label('date') ).\
@@ -185,8 +212,28 @@ def enter_repo():
 @app.route('/out_repo.html', methods=['GET', 'POST'])
 def out_repo():
     '''
-    展示销售出库业务信息
+    出库业务
     '''
+    if request.method == 'POST':
+        commodityName = request.form['commodity']
+        commodity = db.session().query(Commondity).\
+            filter(Commondity.name==commodityName).first()
+        if not commodity:
+            '''商品名输入有误，重新填写'''
+            print("invalid commodity name.")
+            return redirect(url_for('enter_repo'))
+        commodityID = commodity.id
+        repositoryID = request.form['repository']
+        num = request.form['num']
+        user = db.session().query(Salesman).get(session['user_id'])
+        time = datetime.now()
+
+        outRepository = OutRepository(commodityID=commodityID, repositoryID=repositoryID,\
+                                         salesmanID=user.id, commodityNumber=num, time=time)
+        db.session.add(outRepository)
+        db.session.commit()
+        print("商品出库成功！")
+
     results = db.session().query(OutRepository.id, Commondity.name, CommodityCategory.category, OutRepository.repositoryID,  
                                 Salesman.id.label('salesmanID'), Salesman.name.label('salesmanName'),
                                 OutRepository.commodityNumber, OutRepository.time.label('date') ).\
@@ -198,8 +245,30 @@ def out_repo():
 @app.route('/switch_repo.html', methods=['GET', 'POST'])
 def switch_repo():
     '''
-    展示转仓业务信息
+    转仓业务
     '''
+    if request.method == 'POST':
+        commodityName = request.form['commodity']
+        commodity = db.session().query(Commondity).\
+            filter(Commondity.name==commodityName).first()
+        if not commodity:
+            '''商品名输入有误，重新填写'''
+            print("invalid commodity name.")
+            return redirect(url_for('enter_repo'))
+        commodityID = commodity.id
+        fromRepositoryID = request.form['switch_from_repository']
+        toRepositoryID = request.form['switch_to_repository']
+        num = request.form['num']
+        user = db.session().query(Salesman).get(session['user_id'])
+        time = datetime.now()
+
+        switchRepository = SwitchRepository(commodityID=commodityID, outRepositoryID=fromRepositoryID,\
+                                            enterRepositoryID = toRepositoryID, salesmanID=user.id,\
+                                            commodityNumber=num, time=time)
+        db.session.add(switchRepository)
+        db.session.commit()
+        print("商品转仓成功！")
+
     results = db.session().query(SwitchRepository.id, Commondity.name, CommodityCategory.category, 
                                 SwitchRepository.enterRepositoryID, SwitchRepository.outRepositoryID,  
                                 Salesman.id.label('salesmanID'), Salesman.name.label('salesmanName'),

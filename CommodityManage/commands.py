@@ -30,10 +30,13 @@ def forge():
     
     # add salesman: 30
     for i in range(29):
-        salesman = Salesman(name=fake.name(), contact=fake.phone_number(), rank=1)
+        name = fake.name()
+        contact = fake.phone_number()
+        rank=1
+        username = name.split(" ")[0]+"123"
+        salesman = Salesman(name=name, contact=contact, rank=1, username=username)
+        salesman.set_password('123')
         db.session.add(salesman)
-    salesman = Salesman(name=fake.name(), contact=fake.phone_number(), rank=2)
-    db.session.add(salesman)
     # add repository： 5
     for i in range(5):
         repository = Repository(address=fake.address())

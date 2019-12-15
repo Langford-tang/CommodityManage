@@ -82,6 +82,15 @@
                             <li><a href="commodity_static.html"><span>商品进出库统计</span></a></li>
                         </ul>
                     </li>
+                    <li class="lsm-sidebar-item">
+                        <a href="javascript:"><i class="my-icon lsm-sidebar-icon icon_2"></i><span>业务记录</span><i
+                                class="my-icon lsm-sidebar-more"></i></a>
+                        <ul>
+                            <li><a href="enter_repo.html"><span>进货</span></a></li>
+                            <li><a href="out_repo.html"><span>销售</span></a></li>
+                            <li><a href="switch_repo.html"><span>转仓</span></a></li>
+                        </ul>
+                    </li>
 
                 </ul>
             </div>
@@ -96,9 +105,8 @@
         <tr>
             <th scope="col">商品号</th>
             <th scope="col">商品名</th>
-            <th scope="col">商品类别号</th>
             <th scope="col">商品类别名</th>
-            <th scope="col">供货商号</th>
+            <th scope="col">供货商</th>
             <th scope="col">商品价格</th>
 
 
@@ -107,19 +115,19 @@
         </thead>
 
         <tbody id="tbody">
+        {% for commodity in commodities %}
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-
+            <td>{{ commodity.id }}</td>
+            <td>{{ commodity.name }}</td>
+            <td>{{ commodity.category }}</td>
+            <td>{{ commodity.supplier_name }}</td>
+            <td>{{ commodity.price }}</td>
             <td>
                 <button class="uk-button-small uk-button-danger">Edit</button>
                 <button class="uk-button-small uk-button-secondary">Delete</button>
             </td>
         </tr>
+        {% endfor %}
         </tbody>
     </table>
 </div>
